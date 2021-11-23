@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+source read_line.sh
 
 IPs="10.0.0"
 
@@ -10,5 +10,5 @@ for i in {1..9}; do
 done
 
 for value in "${array[@]}"; do
-    echo "${value}"
+    traceroute -T "${value}" | read_line
 done

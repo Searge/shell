@@ -1,15 +1,19 @@
 #!/usr/bin/env bash
-source read_line.sh
+source .env
 
-IPs="10.0.0"
+get_devices() {
+    ip_array=()
 
-array=()
+    for i in {2..254}; do
+        IP="$IPs.$i"
+        ping "$IP" -c 1 -w 2 >/dev/null &&
+            ip_array+=("$IP") &&
+            echo "$IP"
+    done
 
-for i in {1..9}; do
-    ping $IPs.$i -c 1 -w 5 >/dev/null &&
-        array+=("$IPs.$i")
-done
+    for ip in "${ip_array[@]}"; do
+        host "${ip}"
+    done
+}
 
-for value in "${array[@]}"; do
-    traceroute -T "${value}" | read_line
-done
+get_devices

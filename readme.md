@@ -1,3 +1,6 @@
-# Shell
+# A set of shell scripts
 
-## Test scripst
+## TODO:
+
+- [ ] Make TOCTREE
+- [ ] Make Makefile

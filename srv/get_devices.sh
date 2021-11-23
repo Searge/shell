@@ -6,7 +6,8 @@ IPs="10.0.0"
 array=()
 
 for i in {1..9}; do
-    array+=("$IPs.$i")
+    ping $IPs.$i -c 1 -w 5 >/dev/null &&
+        array+=("$IPs.$i")
 done
 
 for value in "${array[@]}"; do

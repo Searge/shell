@@ -1,0 +1,3 @@
+function general() {
+    hostnamectl
+}

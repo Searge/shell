@@ -11,12 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - run: echo $ADM_ENV > scripts/admin/.env
+
       - name: Run ShellCheck
         uses: ludeeus/action-shellcheck@master
         with:
-          scandir: './scripts'
+          scandir: "./scripts"
           format: tty
-      - name: Run ShellLinter
+      - name: Run Shell Linter
         uses: azohra/shell-linter@latest
         with:
           path: "./scripts"

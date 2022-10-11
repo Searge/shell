@@ -1,0 +1,11 @@
+---
+install_sudoers: true
+sudo_allowed_users:
+  - "{{ magento_webserver_user }}"
+extra_packages_webservers:
+  - curl
+  - git
+  - build-essential
+  - tree
+  - lnav
+  - htop

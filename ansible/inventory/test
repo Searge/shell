@@ -1,0 +1,16 @@
+[webservers_test]
+web01 ansible_ssh_host="pprweb01"
+web02 ansible_ssh_host="pprweb02"
+
+[dbservers_test]
+sql01 ansible_ssh_host="pprsql01"
+
+[webservers:children]
+webservers_test
+
+[dbservers:children]
+dbservers_test
+
+[test:children]
+webservers_test
+dbservers_test

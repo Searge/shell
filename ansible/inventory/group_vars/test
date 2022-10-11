@@ -1,0 +1,3 @@
+---
+ansible_user: testuser
+ansible_ssh_common_args: "-F ssh.cfg"

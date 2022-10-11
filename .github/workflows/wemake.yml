@@ -1,0 +1,15 @@
+name: "wemake"
+
+on: [push, pull_request]
+
+jobs:
+  style-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: wemake-python-styleguide
+        uses: wemake-services/wemake-python-styleguide@0.16.1
+
+        with:
+          path: './python'
+          reporter: 'terminal'

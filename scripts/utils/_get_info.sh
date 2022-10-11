@@ -1,5 +1,5 @@
 function get_info() {
-  whoami IP_=$(curl -s ifconfig.me)
+  whoami IP_="$(curl -s ifconfig.me)"
   echo "WAN IP: ${IP_}"
 
   echo "OS:"

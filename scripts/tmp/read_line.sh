@@ -12,15 +12,15 @@ read_line() {
   return read_line
 
 # Get arguments from the command line
-Arguments=($@)
+Arguments=("$@")
 
 # Parse the arguments to variables:
-for var in ${Arguments[@]}; do
-  if [[ $var == *=* ]]; then
-    key=${var%%=*}
-    value=${var#*=}
-    eval $key=$value
+for var in "${Arguments[@]}"; do
+  if [[ "$var" == *=* ]]; then
+    key="${var%%=*}"
+    value="${var#*=}"
+    eval "$key"="$value"
   fi
 done
 
-echo $VAR $VAR2
+echo "$VAR" "$VAR2"

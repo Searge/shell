@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+set -o errexit -o pipefail
+# Magento specific DB dump script
+
+# Change the DB name
+DB_NAME=$(hostname)
+VERSION=$(date +"%d%m_%H-%M")
+OLDEST=$(ls -t DUMPS/${DB_NAME}_*.sql.gz | tail -n 1)
+
+show_dumps() {
+  ls -lht ${HOME}/DUMPS/
+}
+
+echo "Making dump:"
+mysqldump --defaults-extra-file=${HOME}/.config/my ${DB_NAME} \
+  --single-transaction --triggers |
+  sed -e 's/DEFINER[ ]*=[ ]*[^*]*\*/\*/' |
+  gzip >${HOME}/DUMPS/${DB_NAME}_${VERSION}.sql.gz
+
+echo
+echo "Files in Dumps folder:"
+
+show_dumps
+
+# Delete oldest file in Dumps folder
+echo
+echo "Deleting the oldest dump $OLDEST"
+rm -f $OLDEST
+
+echo
+echo "Size of the latest dump:"
+du -h ${HOME}/DUMPS/${DB_NAME}_${VERSION}.sql.gz
+
+echo "Exit code: $?"

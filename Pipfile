@@ -15,6 +15,7 @@ rich = "==11.0.0"
 click = "*"
 ansible = "*"
 ansible-core = "==2.11.*"
+requests = "*"
 
 [requires]
 python_version = "3"

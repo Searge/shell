@@ -3,7 +3,7 @@ name: "wemake"
 on:
   push:
     paths:
-      - "./python"
+      - "python/**"
 
 jobs:
   style-lint:

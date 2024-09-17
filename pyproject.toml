@@ -1,0 +1,34 @@
+[project]
+name = "shell"
+description = "Administration scripts for everyday"
+version = "v0.1.0"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Sergij Boremchuk", email = "searge@duck.com"},
+]
+classifiers = [
+    "License :: OSI Approved :: BSD Clause 3",
+    "Operating System :: POSIX :: Linux",
+    "Intended Audience :: System Administrators",
+]
+keywords = ["bash", "python", "php", "shell"]
+
+requires-python = ">=3.10"
+dependencies = [
+    "aiohttp",
+    "click",
+    "reorder-python-imports>=3.13",
+    "requests",
+    "rich",
+    "ruff",
+    "yamllint",
+]
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+
+[project.urls]
+Repository = "https://github.com/searge/k8s-hard-way-ansible.git"
+

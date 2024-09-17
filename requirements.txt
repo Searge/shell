@@ -48,7 +48,5 @@ ruff==0.6.5
     # via shell (pyproject.toml)
 urllib3==2.2.3
     # via requests
-yamllint==1.35.1
-    # via shell (pyproject.toml)
 yarl==1.11.1
     # via aiohttp

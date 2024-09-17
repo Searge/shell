@@ -1,8 +1,0 @@
-# Vars for ansible-mysql
-mysql_databases:
-  magentodb:
-    db_name :  "{{ magento_db_name }}"
-    collation: utf8_general_ci
-    encoding:  utf8
-    user:      "{{ magento_db_user }}"
-    password:  "{{ magento_db_password }}"

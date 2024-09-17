@@ -1,7 +1,0 @@
-﻿---
-http_service_name: "apache2"
-http_user_name: "www-data"
-http_group_name: "www-data"
-php_ver: "8.1"
-php_path: "php"
-php_service_name: "php8.1-fpm"

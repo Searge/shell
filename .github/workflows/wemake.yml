@@ -1,6 +1,9 @@
 name: "wemake"
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - "./python"
 
 jobs:
   style-lint:
@@ -11,5 +14,5 @@ jobs:
         uses: wemake-services/wemake-python-styleguide@0.16.1
 
         with:
-          path: './python'
-          reporter: 'terminal'
+          path: "./python"
+          reporter: "terminal"

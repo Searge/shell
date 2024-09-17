@@ -1,14 +1,41 @@
-import asyncio
-import aiohttp
+"""
+Ingress-Nginx Load Tester
+
+Usage:    python nginx_load_test.py [-u URL] [-c CONCURRENT] [-n REQUESTS] [-t TIMEOUT] [-v]
+
+Options:
+    -u URL, --url URL
+    -c CONCURRENT, --concurrent CONCURRENT
+    -n REQUESTS, --requests REQUESTS
+    -t TIMEOUT, --timeout TIMEOUT
+    -v, --verbose
+
+Examples:
+    python nginx_load_test.py -u http://example.com -c 10 -n 1000 -t 30
+"""
 import argparse
-import time
+import asyncio
+import socket
 import ssl
 import statistics
-import socket
+import time
 from collections import Counter
 from urllib.parse import urlparse
 
+import aiohttp
+
+
 async def fetch(session, url, timeout):
+    """
+    Fetches a URL using the provided session and timeout. Returns a dictionary containing
+    the HTTP status code, the time taken to fetch the URL, the URL itself, and any error
+    encountered.
+
+    :param session: aiohttp.ClientSession
+    :param url: str
+    :param timeout: float
+    :return: dict
+    """
     start_time = time.time()
     try:
         async with session.get(url, timeout=timeout, ssl=False) as response:
@@ -27,12 +54,29 @@ async def fetch(session, url, timeout):
         return {'status': 0, 'time': time.time() - start_time, 'url': url, 'error': str(e)}
 
 async def load_test(url, concurrent, requests, timeout):
+    """
+    Perform a load test on the given URL.
+
+    :param url: URL to test
+    :param concurrent: Number of concurrent connections
+    :param requests: Total number of requests to make
+    :param timeout: Timeout in seconds
+    :return: List of results, each containing the HTTP status code, the time taken
+             to fetch the URL, the URL itself, and any error encountered.
+    """
     connector = aiohttp.TCPConnector(ssl=False, limit=concurrent)
     async with aiohttp.ClientSession(connector=connector) as session:
         tasks = [fetch(session, url, timeout) for _ in range(requests)]
         return await asyncio.gather(*tasks)
 
 def print_summary(results):
+    """
+    Print a summary of the results of a load test.
+
+    :param results: List of results, each containing the HTTP status code,
+                    the time taken to fetch the URL, the URL itself, and any
+                    error encountered.
+    """
     total_time = sum(r['time'] for r in results)
     successful = sum(1 for r in results if 200 <= r['status'] < 300)
     failed = len(results) - successful
@@ -64,6 +108,15 @@ def print_summary(results):
         print(f"  95th percentile: {statistics.quantiles(times, n=20)[-1]:.3f}s")
 
 def perform_dns_check(url):
+    """
+    Perform a DNS resolution check for the given URL.
+
+    Print the resolved IP address if the DNS resolution is successful.
+    Print an error message if the DNS resolution fails.
+
+    Args:
+        url (str): The URL to check.
+    """
     parsed_url = urlparse(url)
     hostname = parsed_url.hostname
     print(f"\nDNS Resolution for {hostname}:")
@@ -74,6 +127,16 @@ def perform_dns_check(url):
         print(f"  DNS resolution failed: {e}")
 
 def perform_ssl_check(url: str) -> None:
+    """
+    Perform an SSL certificate check for the given URL.
+
+    Print the subject, issuer, version, serial number, notBefore, and notAfter dates
+    if the SSL certificate verification is successful.
+    Print an error message if the SSL certificate verification fails.
+
+    Args:
+        url (str): The URL to check.
+    """
     parsed_url = urlparse(url)
     hostname = parsed_url.hostname
     port = parsed_url.port or 443
@@ -98,6 +161,15 @@ def perform_ssl_check(url: str) -> None:
         print(f"  Error during SSL check: {e}")
 
 async def main():
+    """
+    Parse command line arguments and run the load test.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     parser = argparse.ArgumentParser(description="Async Load Tester for Ingress-Nginx")
     parser.add_argument("-u", "--url", required=True, help="Target URL")
     parser.add_argument("-c", "--concurrent", type=int, default=10, help="Number of concurrent connections")
@@ -105,7 +177,7 @@ async def main():
     parser.add_argument("-t", "--timeout", type=float, default=30, help="Timeout in seconds")
     args = parser.parse_args()
 
-    print(f"Running load test with the following parameters:")
+    print("Running load test with the following parameters:")
     print(f"URL: {args.url}")
     print(f"Concurrent connections: {args.concurrent}")
     print(f"Total requests: {args.requests}")

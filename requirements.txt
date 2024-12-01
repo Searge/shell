@@ -38,7 +38,7 @@ pygments==2.18.0
     # via rich
 pyyaml==6.0.2
     # via yamllint
-reorder-python-imports==3.13.0
+reorder-python-imports==3.14.0
     # via shell (pyproject.toml)
 requests==2.32.3
     # via shell (pyproject.toml)

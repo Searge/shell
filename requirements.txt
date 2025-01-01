@@ -10,7 +10,7 @@ attrs==24.2.0
     # via aiohttp
 certifi==2024.8.30
     # via requests
-charset-normalizer==3.4.0
+charset-normalizer==3.4.1
     # via requests
 classify-imports==4.2.0
     # via reorder-python-imports

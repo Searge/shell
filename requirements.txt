@@ -32,12 +32,12 @@ multidict==6.1.0
     # via
     #   aiohttp
     #   yarl
-pathspec==0.12.1
-    # via yamllint
+propcache==0.2.1
+    # via
+    #   aiohttp
+    #   yarl
 pygments==2.18.0
     # via rich
-pyyaml==6.0.2
-    # via yamllint
 reorder-python-imports==3.14.0
     # via shell (pyproject.toml)
 requests==2.32.3

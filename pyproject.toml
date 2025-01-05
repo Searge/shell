@@ -14,7 +14,7 @@ classifiers = [
 ]
 keywords = ["bash", "python", "php", "shell"]
 
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 dependencies = [
     "aiohttp",
     "click",
@@ -29,5 +29,5 @@ venvPath = "."
 venv = ".venv"
 
 [project.urls]
-Repository = "https://github.com/searge/k8s-hard-way-ansible.git"
+Repository = "https://github.com/Searge/shell.git"
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# https://seva.rocks/posts/pipes-in-bash/
 
 # List of images to process
 DOCKER_IMAGES=(
@@ -11,9 +12,9 @@ DOCKER_IMAGES=(
 REGISTRY1_PUSH_TIME=5  # seconds
 REGISTRY2_PUSH_TIME=1  # seconds
 
-# FIFO paths
-REGISTRY1_FIFO="/tmp/reg1.fifo"
-REGISTRY2_FIFO="/tmp/reg2.fifo"
+# Communication channel paths
+REGISTRY1_CHANNEL="/tmp/reg1.fifo"
+REGISTRY2_CHANNEL="/tmp/reg2.fifo"
 
 # Build a docker image.
 #
@@ -115,14 +116,16 @@ function main() {
     # Export functions for subshell usage
     export -f docker_build docker_push webhook
 
-    # Create main registry FIFOs
-    mkfifo "$REGISTRY1_FIFO"
-    mkfifo "$REGISTRY2_FIFO"
+    # Create named channels for registry push
+    mkfifo "$REGISTRY1_CHANNEL"
+    mkfifo "$REGISTRY2_CHANNEL"
 
     # Start main process
     (
-        exec 3>"$REGISTRY1_FIFO"
-        exec 4>"$REGISTRY2_FIFO"
+        # Open channels file descriptors for writing
+        # https://www.linuxtopia.org/online_books/advanced_bash_scripting_guide/x13082.html
+        exec 3>"$REGISTRY1_CHANNEL"
+        exec 4>"$REGISTRY2_CHANNEL"
 
         for image in "${DOCKER_IMAGES[@]}"; do
             read -r reg1_fifo reg2_fifo <<< "$(create_image_fifos "$image")"
@@ -134,12 +137,12 @@ function main() {
         # Close and cleanup main FIFOs
         exec 3>&-
         exec 4>&-
-        rm "$REGISTRY1_FIFO" "$REGISTRY2_FIFO"
+        rm "$REGISTRY1_CHANNEL" "$REGISTRY2_CHANNEL"
     ) &
 
     # Start registry push processes
-    start_registry_push "$REGISTRY1_FIFO" "reg1" "$REGISTRY1_PUSH_TIME"
-    start_registry_push "$REGISTRY2_FIFO" "reg2" "$REGISTRY2_PUSH_TIME"
+    start_registry_push "$REGISTRY1_CHANNEL" "reg1" "$REGISTRY1_PUSH_TIME"
+    start_registry_push "$REGISTRY2_CHANNEL" "reg2" "$REGISTRY2_PUSH_TIME"
 
     # Wait for all background processes to complete
     wait

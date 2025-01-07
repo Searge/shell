@@ -143,6 +143,7 @@ def perform_ssl_check(url: str) -> None:
     print(f"\nSSL Certificate Check for {hostname}:")
     try:
         context = ssl.create_default_context()
+        context.minimum_version = ssl.TLSVersion.TLSv1_2
         with socket.create_connection((hostname, port)) as sock:
             with context.wrap_socket(sock, server_hostname=hostname) as secure_sock:
                 cert = secure_sock.getpeercert()

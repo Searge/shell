@@ -36,7 +36,7 @@ propcache==0.2.1
     # via
     #   aiohttp
     #   yarl
-pygments==2.18.0
+pygments==2.19.1
     # via rich
 reorder-python-imports==3.14.0
     # via shell (pyproject.toml)

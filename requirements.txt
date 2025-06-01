@@ -14,7 +14,7 @@ charset-normalizer==3.4.1
     # via requests
 classify-imports==4.2.0
     # via reorder-python-imports
-click==8.1.8
+click==8.2.1
     # via shell (pyproject.toml)
 frozenlist==1.6.0
     # via

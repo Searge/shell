@@ -38,7 +38,7 @@ propcache==0.3.1
     #   yarl
 pygments==2.19.1
     # via rich
-reorder-python-imports==3.14.0
+reorder-python-imports==3.15.0
     # via shell (pyproject.toml)
 requests==2.32.3
     # via shell (pyproject.toml)
